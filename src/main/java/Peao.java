@@ -16,10 +16,20 @@ public class Peao {
         return this;
     }
 
+    public void mover(int numeroCasas){
+        if(this.posicao != -1){
+            this.posicao = this.posicao + numeroCasas;
+        }
+        else if(numeroCasas == 6){
+            this.posicao = numeroCasas;
+        }
+    }
+
     public static boolean conflitantes(Peao m_Peao1, Peao m_Peao2) {
         boolean mesmaCor = m_Peao1.cor == m_Peao2.cor;
         boolean mesmaPosicao = m_Peao1.getPosicao() == m_Peao2.getPosicao();
         boolean noTabuleiro = m_Peao1.getPosicao() != -1;
         return !mesmaCor && mesmaPosicao && noTabuleiro;
     }
+
 }

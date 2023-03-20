@@ -7,6 +7,20 @@ public class Jogo {
         instanciaJogo.run();
     }
 
+    public int rolarDado(){
+        return (int)(Math.random() * 6) + 1;
+    }
+
+    public void moverPeao(Peao peaoMovido, int movimento){
+        peaoMovido.mover(movimento);
+        for(Peao peao: peoes){
+            //se houver conflito, captura o peão parado
+            if(Peao.conflitantes(peaoMovido, peao)){
+                peao.setPosicao(-1);
+            }
+        }
+    }
+
     public void run() {
         peoes = new Peao[8];
         posicoes = new int[]{ -1, -1, -1, -1, -1, -1, -1, -1 };
@@ -27,5 +41,6 @@ public class Jogo {
         peoes[3].setPosicao(20);
         peoes[4].setPosicao(20);
         System.out.println(Peao.conflitantes(peoes[3], peoes[4]) ? "Conflito" : "Jogo prossegue");
+
     }
 }
