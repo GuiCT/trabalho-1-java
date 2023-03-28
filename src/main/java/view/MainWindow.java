@@ -36,7 +36,9 @@ public class MainWindow extends javax.swing.JFrame {
         textAreaJogadas = new javax.swing.JTextArea();
         buttonDado = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
+        menuJogar = new javax.swing.JMenu();
+        menuSerHost = new javax.swing.JMenuItem();
+        menuEntrarPartida = new javax.swing.JMenuItem();
         menuRegras = new javax.swing.JMenu();
         menuVisualizarRegras = new javax.swing.JMenuItem();
 
@@ -88,8 +90,15 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
-        jMenu2.setText("File");
-        menuBar.add(jMenu2);
+        menuJogar.setText("Jogar");
+
+        menuSerHost.setText("Ser host");
+        menuJogar.add(menuSerHost);
+
+        menuEntrarPartida.setText("Entrar em partida");
+        menuJogar.add(menuEntrarPartida);
+
+        menuBar.add(menuJogar);
 
         menuRegras.setText("Regras");
 
@@ -173,10 +182,12 @@ public class MainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonDado;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem menuEntrarPartida;
+    private javax.swing.JMenu menuJogar;
     private javax.swing.JMenu menuRegras;
+    private javax.swing.JMenuItem menuSerHost;
     private javax.swing.JMenuItem menuVisualizarRegras;
     private javax.swing.JPanel panelJogadas;
     private javax.swing.JPanel panelTabuleiro;
