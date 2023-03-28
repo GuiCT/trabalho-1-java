@@ -4,8 +4,12 @@
  */
 package view;
 
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  *
@@ -94,9 +98,65 @@ public class MainWindow extends javax.swing.JFrame {
 
         menuSerHost.setText("Ser host");
         menuJogar.add(menuSerHost);
+        menuSerHost.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    JOptionPane.showMessageDialog(null, "Host: " + Inet4Address.getLocalHost().getHostAddress());
+                } catch (UnknownHostException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
 
         menuEntrarPartida.setText("Entrar em partida");
         menuJogar.add(menuEntrarPartida);
+        menuEntrarPartida.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame a = new JFrame("Host");
+                a.setSize(480, 200);
+
+                JLabel l = new JLabel("Insira o IP do servidor");
+                l.setBounds(130, 10, 200, 40);
+                a.add(l);
+
+                JTextField t = new JTextField();
+                t.setBounds(130, 50, 200, 40);
+                a.add(t);
+
+                // Adds a simple button
+                JButton b = new JButton("Host");
+                b.setBounds(130,100,200,40);
+                b.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            String ip = t.getText();
+                            InetAddress address = InetAddress.getByName(ip);
+                            String regex = "(\\d{1,3})"; // Regular expression to match 1-3 digits
+//                            if (!ip.matches(regex + "\\." + regex + "\\." + regex + "\\." + regex)) {
+//                                // Adds the current exception to the stack trace
+//                            }
+                            JOptionPane.showMessageDialog(null, "IP inserido: " + address.getHostAddress());
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null, "Erro ao pegar o IP");
+                        }
+                    }
+                });
+                a.add(b);
+
+                // Takes as input the IP of the server
+                // It also treats the exceptions
+
+
+
+                a.setLayout(null);
+                a.setVisible(true);
+                a.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            }
+        });
 
         menuBar.add(menuJogar);
 
