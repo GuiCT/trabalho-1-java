@@ -41,6 +41,5 @@ public class Jogo {
         peoes[3].setPosicao(20);
         peoes[4].setPosicao(20);
         System.out.println(Peao.conflitantes(peoes[3], peoes[4]) ? "Conflito" : "Jogo prossegue");
-
     }
 }
