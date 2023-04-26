@@ -189,5 +189,25 @@ public class Jogo {
         jogo.realizarMovimento(false, 0, 2);
     }
 
-
+    //verifica se o movimento do jogador resultou em vitoria
+    public boolean jogoFinalizado(boolean jogador){
+        if(jogador){
+            for(Status statusPeao: statusPeoesJogador){
+                if(statusPeao != Status.FINAL){
+                    return false;
+                }
+            }
+            jogadorVencedor = true;
+            return true;
+        }
+        else {
+            for (Status statusPeao : statusPeoesOponente) {
+                if (statusPeao != Status.FINAL) {
+                    return false;
+                }
+            }
+            jogadorVencedor = false;
+            return true;
+        }
+    }
 }
