@@ -35,13 +35,16 @@ public class ControllerJogo {
             int valorDado = ((int)(Math.random() * 6)) + 1;
             String movimento = Integer.toString(valorDado) + " " + Integer.toString(numPeao);
             dataOutputStream.writeUTF(movimento);
+            this.jogo.realizarMovimento(true, numPeao, valorDado);
             this.turn = false;
         }
     }
 
     public void escutarOponente() throws Exception{
         String movimento[] = dataInputStream.readUTF().trim().split("\\s+");
-        jogo.realizarMovimento(false, Integer.parseInt(movimento[1]), Integer.parseInt(movimento[0]));
+        int peaoMovido = Integer.parseInt(movimento[1]);
+        int valorDado = Integer.parseInt(movimento[0]);
+        jogo.realizarMovimento(false, peaoMovido, valorDado);
         this.turn = true;
     }
 
