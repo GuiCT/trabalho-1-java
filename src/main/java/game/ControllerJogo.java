@@ -1,4 +1,5 @@
 package game;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
@@ -11,8 +12,7 @@ public class ControllerJogo {
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
 
-
-    public void hostMatch() throws Exception{
+    public void hostMatch() throws Exception {
         ServerSocket listenSocket = new ServerSocket(7000);
         this.socket = listenSocket.accept();
         this.jogo = new Jogo(Cor.AMARELO);
@@ -22,7 +22,7 @@ public class ControllerJogo {
         listenSocket.close();
     }
 
-    public void joinMatch(String address) throws Exception{
+    public void joinMatch(String address) throws Exception {
         this.socket = new Socket(address, 7000);
         this.jogo = new Jogo(Cor.VERMELHO);
         this.turn = false;
@@ -30,9 +30,9 @@ public class ControllerJogo {
         dataInputStream = new DataInputStream(this.socket.getInputStream());
     }
 
-    public void moverPeao(int numPeao) throws Exception{
-        if(this.turn){
-            int valorDado = ((int)(Math.random() * 6)) + 1;
+    public void moverPeao(int numPeao) throws Exception {
+        if (this.turn) {
+            int valorDado = ((int) (Math.random() * 6)) + 1;
             String movimento = Integer.toString(valorDado) + " " + Integer.toString(numPeao);
             dataOutputStream.writeUTF(movimento);
             this.jogo.realizarMovimento(true, numPeao, valorDado);
@@ -40,7 +40,7 @@ public class ControllerJogo {
         }
     }
 
-    public void escutarOponente() throws Exception{
+    public void escutarOponente() throws Exception {
         String movimento[] = dataInputStream.readUTF().trim().split("\\s+");
         int peaoMovido = Integer.parseInt(movimento[1]);
         int valorDado = Integer.parseInt(movimento[0]);
@@ -48,7 +48,7 @@ public class ControllerJogo {
         this.turn = true;
     }
 
-    public boolean verificarVitoria(boolean jogador){
+    public boolean verificarVitoria(boolean jogador) {
         return jogo.jogoFinalizado(jogador);
     }
 }
