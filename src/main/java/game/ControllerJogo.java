@@ -16,13 +16,16 @@ public class ControllerJogo {
         ServerSocket listenSocket = new ServerSocket(7000);
         this.socket = listenSocket.accept();
         this.jogo = new Jogo(Cor.AMARELO);
+        this.turn = true;
         dataOutputStream = new DataOutputStream(this.socket.getOutputStream());
         dataInputStream = new DataInputStream(this.socket.getInputStream());
+        listenSocket.close();
     }
 
     public void joinMatch(String address) throws Exception{
         this.socket = new Socket(address, 7000);
         this.jogo = new Jogo(Cor.VERMELHO);
+        this.turn = false;
         dataOutputStream = new DataOutputStream(this.socket.getOutputStream());
         dataInputStream = new DataInputStream(this.socket.getInputStream());
     }
