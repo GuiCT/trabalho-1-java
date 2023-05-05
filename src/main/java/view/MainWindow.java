@@ -32,7 +32,7 @@ public class MainWindow extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        uiTabuleiro = new UITabuleiro();
         jMenu1 = new javax.swing.JMenu();
         panelTabuleiro = new javax.swing.JPanel();
         panelJogadas = new javax.swing.JPanel();
@@ -60,6 +60,8 @@ public class MainWindow extends javax.swing.JFrame {
             panelTabuleiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
+//            panelTabuleiroLayout.addLayoutComponent(uiTabuleiro, null);
+        this.getContentPane().add(uiTabuleiro, java.awt.BorderLayout.CENTER);
 
         textAreaJogadas.setEditable(false);
         textAreaJogadas.setColumns(20);
@@ -252,5 +254,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JPanel panelJogadas;
     private javax.swing.JPanel panelTabuleiro;
     private javax.swing.JTextArea textAreaJogadas;
+    private JPanel uiTabuleiro;
     // End of variables declaration//GEN-END:variables
 }
