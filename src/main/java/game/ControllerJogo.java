@@ -41,11 +41,13 @@ public class ControllerJogo {
     }
 
     public void escutarOponente() throws Exception {
-        String movimento[] = dataInputStream.readUTF().trim().split("\\s+");
-        int peaoMovido = Integer.parseInt(movimento[1]);
-        int valorDado = Integer.parseInt(movimento[0]);
-        jogo.realizarMovimento(false, peaoMovido, valorDado);
-        this.turn = true;
+        if(!turn){
+            String movimento[] = dataInputStream.readUTF().trim().split("\\s+");
+            int peaoMovido = Integer.parseInt(movimento[1]);
+            int valorDado = Integer.parseInt(movimento[0]);
+            jogo.realizarMovimento(false, peaoMovido, valorDado);
+            this.turn = true;
+        }
     }
 
     public boolean verificarVitoria(boolean jogador) {
