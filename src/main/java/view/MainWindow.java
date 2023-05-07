@@ -5,6 +5,7 @@
 package view;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.Inet4Address;
@@ -32,9 +33,8 @@ public class MainWindow extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        uiTabuleiro = new UITabuleiro();
         jMenu1 = new javax.swing.JMenu();
-        panelTabuleiro = new javax.swing.JPanel();
+        panelTabuleiro = new UITabuleiro();
         panelJogadas = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         textAreaJogadas = new javax.swing.JTextArea();
@@ -50,18 +50,9 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout panelTabuleiroLayout = new javax.swing.GroupLayout(panelTabuleiro);
-        panelTabuleiro.setLayout(panelTabuleiroLayout);
-        panelTabuleiroLayout.setHorizontalGroup(
-            panelTabuleiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 319, Short.MAX_VALUE)
-        );
-        panelTabuleiroLayout.setVerticalGroup(
-            panelTabuleiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
+
 //            panelTabuleiroLayout.addLayoutComponent(uiTabuleiro, null);
-        this.getContentPane().add(uiTabuleiro, java.awt.BorderLayout.CENTER);
+//        this.getContentPane().add(uiTabuleiro, java.awt.BorderLayout.CENTER);
 
         textAreaJogadas.setEditable(false);
         textAreaJogadas.setColumns(20);
@@ -196,6 +187,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addComponent(panelJogadas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+        panelTabuleiro.setBackground(Color.WHITE);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

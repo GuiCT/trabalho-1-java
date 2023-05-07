@@ -62,6 +62,7 @@ public class MainWindow2 extends JFrame {
         BorderLayout mainLayout = new BorderLayout();
         getContentPane().setLayout(mainLayout);
 
+        panelTabuleiro.add(new UITabuleiro());
         getContentPane().add(panelTabuleiro, BorderLayout.CENTER);
 
         BorderLayout panelJogadasLayout = new BorderLayout();
