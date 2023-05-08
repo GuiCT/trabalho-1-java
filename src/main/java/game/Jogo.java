@@ -5,7 +5,6 @@ import java.util.List;
 import view.Mappings;
 
 public class Jogo {
-    private static final int[] posicoesEspeciais = { 0, 8, 21, 26, 34, 47 };
     private static final int casasAteFim = 50;
     private static final int casasFila = 5;
     // ------------------------------------------------------------------------
@@ -136,7 +135,7 @@ public class Jogo {
     }
 
     private boolean verificarPosicaoEspecial(int posicao) {
-        for (int posicaoEspecial : posicoesEspeciais) {
+        for (int posicaoEspecial : Mappings.posicoesEspeciais) {
             if (posicao == posicaoEspecial) {
                 return true;
             }

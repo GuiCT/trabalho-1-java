@@ -20,7 +20,6 @@ public class UITabuleiro extends JPanel {
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 casas[i][j] = new Casa(new Posicao2D(j, i));
-                casas[i][j].addActionListener(this::atualizarPeaoSelecionado);
                 add(casas[i][j]);
             }
         }
@@ -101,6 +100,11 @@ public class UITabuleiro extends JPanel {
             casas[pos.y][pos.x].setCor(Color.BLUE);
         }
 
+        // Casas especiais
+        for (int casaEspecial : Mappings.posicoesEspeciais)
+            casas[Mappings.posicoesTabuleiro[casaEspecial].y][Mappings.posicoesTabuleiro[casaEspecial].x]
+                    .setCor(Color.GRAY);
+
         // Tabuleiro, casa de saída de cada cor
         casas[Mappings.posicoesTabuleiro[0].y][Mappings.posicoesTabuleiro[0].x].setCor(Color.YELLOW);
         casas[Mappings.posicoesTabuleiro[13].y][Mappings.posicoesTabuleiro[13].x].setCor(Color.BLUE);
@@ -117,6 +121,12 @@ public class UITabuleiro extends JPanel {
 
     public void setControllerJogo(ControllerJogo controllerJogo) {
         this.controllerJogo = controllerJogo;
+
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                casas[i][j].addActionListener(this::atualizarPeaoSelecionado);
+            }
+        }
     }
 
     public void inicializarPeoes(Posicao[] posicoesJogador, Posicao[] posicoesOponente) {

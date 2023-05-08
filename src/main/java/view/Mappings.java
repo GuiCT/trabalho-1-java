@@ -145,4 +145,5 @@ public class Mappings {
         int offset = Mappings.offsets.get(cor);
         return (posicao + offset) % 52;
     }
+    public static final int[] posicoesEspeciais = { 0, 8, 21, 26, 34, 47 };
 }
