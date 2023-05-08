@@ -2,5 +2,8 @@ package game;
 
 public enum Cor {
   AMARELO,
-  VERMELHO
+  VERMELHO,
+  VERDE,
+  AZUL,
+  BRANCO
 }
