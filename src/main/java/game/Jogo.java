@@ -5,7 +5,7 @@ import java.util.List;
 import view.Mappings;
 
 public class Jogo {
-    private static final int[] posicoesEspeciais = { 8, 21, 34, 47 };
+    private static final int[] posicoesEspeciais = { 0, 8, 21, 26, 34, 47 };
     private static final int casasAteFim = 50;
     private static final int casasFila = 6;
     // ------------------------------------------------------------------------
@@ -113,6 +113,10 @@ public class Jogo {
             this.posicoesPeoesJogador[peao] = posicaoBaseAtual;
         } else {
             this.posicoesPeoesOponente[peao] = posicaoBaseAtual;
+        }
+
+        for(Posicao i:this.posicoesPeoesJogador){
+            System.out.println(i.posicao);
         }
     }
 

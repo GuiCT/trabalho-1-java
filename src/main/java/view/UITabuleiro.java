@@ -126,9 +126,9 @@ public class UITabuleiro extends JPanel {
         Cor corOponente = controllerJogo.getCorOponente();
         for (int i = 0; i < 4; i++) {
             Posicao2D posicao2DJogador = posicaoCasasJogador[posicoesJogador[i].posicao];
-            casas[posicao2DJogador.y][posicao2DJogador.x].setCorPeao(corJogador);
+            casas[posicao2DJogador.y][posicao2DJogador.x].adicionarPeao(corJogador);
             Posicao2D posicao2DOponente = posicaoCasasOponente[posicoesOponente[i].posicao];
-            casas[posicao2DOponente.y][posicao2DOponente.x].setCorPeao(corOponente);
+            casas[posicao2DOponente.y][posicao2DOponente.x].adicionarPeao(corOponente);
         }
     }
 
@@ -144,16 +144,16 @@ public class UITabuleiro extends JPanel {
         switch (posicaoAnterior.status) {
             case BASE -> {
                 Posicao2D posicao2DAnterior = Mappings.posicaoCasas.get(cor)[posicaoAnterior.posicao];
-                casas[posicao2DAnterior.y][posicao2DAnterior.x].setCorPeao(null);
+                casas[posicao2DAnterior.y][posicao2DAnterior.x].removerPeao(cor);
             }
             case TABULEIRO -> {
                 Posicao2D posicao2DAnterior = Mappings.posicoesTabuleiro[Mappings.calcularPosicao(cor,
                         posicaoAnterior.posicao)];
-                casas[posicao2DAnterior.y][posicao2DAnterior.x].setCorPeao(null);
+                casas[posicao2DAnterior.y][posicao2DAnterior.x].removerPeao(cor);
             }
             case FILA -> {
                 Posicao2D posicao2DAnterior = Mappings.posicaoFilas.get(cor)[posicaoAnterior.posicao];
-                casas[posicao2DAnterior.y][posicao2DAnterior.x].setCorPeao(null);
+                casas[posicao2DAnterior.y][posicao2DAnterior.x].removerPeao(cor);
             }
             case FINAL -> {
             }
@@ -162,16 +162,16 @@ public class UITabuleiro extends JPanel {
         switch (posicaoAtual.status) {
             case BASE -> {
                 Posicao2D posicao2Dnova = Mappings.posicaoCasas.get(cor)[posicaoAtual.posicao];
-                casas[posicao2Dnova.y][posicao2Dnova.x].setCorPeao(cor);
+                casas[posicao2Dnova.y][posicao2Dnova.x].adicionarPeao(cor);
             }
             case TABULEIRO -> {
                 Posicao2D posicao2Dnova = Mappings.posicoesTabuleiro[Mappings.calcularPosicao(cor,
                         posicaoAtual.posicao)];
-                casas[posicao2Dnova.y][posicao2Dnova.x].setCorPeao(cor);
+                casas[posicao2Dnova.y][posicao2Dnova.x].adicionarPeao(cor);
             }
             case FILA -> {
                 Posicao2D posicao2Dnova = Mappings.posicaoFilas.get(cor)[posicaoAtual.posicao - 1];
-                casas[posicao2Dnova.y][posicao2Dnova.x].setCorPeao(cor);
+                casas[posicao2Dnova.y][posicao2Dnova.x].adicionarPeao(cor);
             }
             case FINAL -> {
             }
@@ -201,52 +201,52 @@ public class UITabuleiro extends JPanel {
     public void peaoDaBaseParaTabuleiro(int casa, Cor cor) {
         if (casa == 0)
             if (cor == Cor.VERDE)
-                casas[1][1].setCorPeao(Cor.BRANCO);
+                casas[1][1].adicionarPeao(Cor.BRANCO);
             else if (cor == Cor.AMARELO)
-                casas[1][13].setCorPeao(Cor.BRANCO);
+                casas[1][13].adicionarPeao(Cor.BRANCO);
             else if (cor == Cor.VERMELHO)
-                casas[13][1].setCorPeao(Cor.BRANCO);
+                casas[13][1].adicionarPeao(Cor.BRANCO);
             else if (cor == Cor.AZUL)
-                casas[13][13].setCorPeao(Cor.BRANCO);
+                casas[13][13].adicionarPeao(Cor.BRANCO);
 
         if (casa == 1)
             if (cor == Cor.VERDE)
-                casas[1][4].setCorPeao(Cor.VERDE);
+                casas[1][4].adicionarPeao(Cor.VERDE);
             else if (cor == Cor.AMARELO)
-                casas[1][10].setCorPeao(Cor.AMARELO);
+                casas[1][10].adicionarPeao(Cor.AMARELO);
             else if (cor == Cor.VERMELHO)
-                casas[10][1].setCorPeao(Cor.VERMELHO);
+                casas[10][1].adicionarPeao(Cor.VERMELHO);
             else if (cor == Cor.AZUL)
-                casas[10][13].setCorPeao(Cor.AZUL);
+                casas[10][13].adicionarPeao(Cor.AZUL);
 
         if (casa == 2)
             if (cor == Cor.VERDE)
-                casas[4][1].setCorPeao(Cor.VERDE);
+                casas[4][1].adicionarPeao(Cor.VERDE);
             else if (cor == Cor.AMARELO)
-                casas[4][13].setCorPeao(Cor.AMARELO);
+                casas[4][13].adicionarPeao(Cor.AMARELO);
             else if (cor == Cor.VERMELHO)
-                casas[13][4].setCorPeao(Cor.VERMELHO);
+                casas[13][4].adicionarPeao(Cor.VERMELHO);
             else if (cor == Cor.AZUL)
-                casas[13][10].setCorPeao(Cor.AZUL);
+                casas[13][10].adicionarPeao(Cor.AZUL);
 
         if (casa == 3)
             if (cor == Cor.VERDE)
-                casas[4][4].setCorPeao(Cor.VERDE);
+                casas[4][4].adicionarPeao(Cor.VERDE);
             else if (cor == Cor.AMARELO)
-                casas[4][10].setCorPeao(Cor.AMARELO);
+                casas[4][10].adicionarPeao(Cor.AMARELO);
             else if (cor == Cor.VERMELHO)
-                casas[10][4].setCorPeao(Cor.VERMELHO);
+                casas[10][4].adicionarPeao(Cor.VERMELHO);
             else if (cor == Cor.AZUL)
-                casas[10][10].setCorPeao(Cor.AZUL);
+                casas[10][10].adicionarPeao(Cor.AZUL);
 
         if (cor == Cor.VERDE) {
-            casas[6][1].setCorPeao(Cor.VERDE);
+            casas[6][1].adicionarPeao(Cor.VERDE);
         } else if (cor == Cor.AMARELO) {
-            casas[1][8].setCorPeao(Cor.AMARELO);
+            casas[1][8].adicionarPeao(Cor.AMARELO);
         } else if (cor == Cor.VERMELHO) {
-            casas[13][6].setCorPeao(Cor.VERMELHO);
+            casas[13][6].adicionarPeao(Cor.VERMELHO);
         } else if (cor == Cor.AZUL) {
-            casas[8][13].setCorPeao(Cor.AZUL);
+            casas[8][13].adicionarPeao(Cor.AZUL);
         }
     }
 
