@@ -2,12 +2,9 @@ package game;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import view.Mappings;
 
 public class Jogo {
-    private static final Map<Cor, Integer> offsets = Map.of(
-            Cor.AMARELO, 26,
-            Cor.VERMELHO, 0);
     private static final int[] posicoesEspeciais = { 8, 21, 34, 47 };
     private static final int casasAteFim = 50;
     private static final int casasFila = 6;
@@ -86,7 +83,7 @@ public class Jogo {
             // Verifica se há algum peão do oponente na posição atingida
             // Se houver, esse pẽao é colocado na base
             // Caso seja uma posição especial, não é verificado se há peão
-            int posicaoReal = calcularPosicao(jogador, posicaoBaseAtual.posicao);
+            int posicaoReal = Mappings.calcularPosicao(corJogador, posicaoBaseAtual.posicao);
 
             if (!verificarPosicaoEspecial(posicaoReal)) {
                 List<Integer> conflitos = verificarConflito(jogador, posicaoReal);
@@ -119,11 +116,6 @@ public class Jogo {
         }
     }
 
-    private int calcularPosicao(boolean jogador, int posicao) {
-        int offset = offsets.get(jogador ? this.corJogador : this.corOponente);
-        return (posicao + offset) % (casasAteFim + 2);
-    }
-
     private List<Integer> verificarConflito(boolean jogador, int posicao) {
         List<Integer> conflitos = new ArrayList<>();
 
@@ -131,7 +123,7 @@ public class Jogo {
         // Se jogador for false, verifica se há conflito com jogador
         for (int i = 0; i < 4; i++) {
             int posicaoBase = jogador ? this.posicoesPeoesOponente[i].posicao : this.posicoesPeoesJogador[i].posicao;
-            int posicaoReal = calcularPosicao(!jogador, posicaoBase);
+            int posicaoReal = Mappings.calcularPosicao(jogador ? this.corOponente : this.corJogador, posicaoBase);
             if (posicaoReal == posicao) {
                 conflitos.add(i);
             }

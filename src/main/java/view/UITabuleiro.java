@@ -59,7 +59,7 @@ public class UITabuleiro extends JPanel {
         for (Posicao2D pos : Mappings.posicaoCasas.get(Cor.AMARELO)) {
             casas[pos.y][pos.x].setCor(Color.WHITE);
         }
-        
+
         // Fila
         for (Posicao2D pos : Mappings.posicaoFilas.get(Cor.AMARELO)) {
             casas[pos.y][pos.x].setCor(Color.YELLOW);
@@ -132,7 +132,14 @@ public class UITabuleiro extends JPanel {
         }
     }
 
-    public void atualizarPeoes(Posicao posicaoAnterior, Posicao posicaoAtual, Cor cor) {
+    // Atualiza TODOS os peões de uma determinada cor
+    public void atualizarPeoes(Posicao[] posicoesAnteriores, Posicao[] posicoesAtuais, Cor cor) {
+        for (int i = 0; i < 4; i++)
+            atualizarPeao(posicoesAnteriores[i], posicoesAtuais[i], cor);
+    }
+
+    // Atualiza apenas um único peão de uma determinada cor
+    public void atualizarPeao(Posicao posicaoAnterior, Posicao posicaoAtual, Cor cor) {
         // Atualizar posição anterior para não conter peão
         switch (posicaoAnterior.status) {
             case BASE -> {
@@ -140,14 +147,16 @@ public class UITabuleiro extends JPanel {
                 casas[posicao2DAnterior.y][posicao2DAnterior.x].setCorPeao(null);
             }
             case TABULEIRO -> {
-                Posicao2D posicao2DAnterior = Mappings.posicoesTabuleiro[posicaoAnterior.posicao];
+                Posicao2D posicao2DAnterior = Mappings.posicoesTabuleiro[Mappings.calcularPosicao(cor,
+                        posicaoAnterior.posicao)];
                 casas[posicao2DAnterior.y][posicao2DAnterior.x].setCorPeao(null);
             }
             case FILA -> {
                 Posicao2D posicao2DAnterior = Mappings.posicaoFilas.get(cor)[posicaoAnterior.posicao];
                 casas[posicao2DAnterior.y][posicao2DAnterior.x].setCorPeao(null);
             }
-            case FINAL -> {}
+            case FINAL -> {
+            }
         }
         // Colocar peão na posição nova
         switch (posicaoAtual.status) {
@@ -156,14 +165,16 @@ public class UITabuleiro extends JPanel {
                 casas[posicao2Dnova.y][posicao2Dnova.x].setCorPeao(cor);
             }
             case TABULEIRO -> {
-                Posicao2D posicao2Dnova = Mappings.posicoesTabuleiro[posicaoAtual.posicao];
+                Posicao2D posicao2Dnova = Mappings.posicoesTabuleiro[Mappings.calcularPosicao(cor,
+                        posicaoAtual.posicao)];
                 casas[posicao2Dnova.y][posicao2Dnova.x].setCorPeao(cor);
             }
             case FILA -> {
                 Posicao2D posicao2Dnova = Mappings.posicaoFilas.get(cor)[posicaoAtual.posicao - 1];
                 casas[posicao2Dnova.y][posicao2Dnova.x].setCorPeao(cor);
             }
-            case FINAL -> {}
+            case FINAL -> {
+            }
         }
     }
 
@@ -172,10 +183,10 @@ public class UITabuleiro extends JPanel {
         Posicao2D posicao2DSelecionada = casa.posicao;
         Posicao[] posicoesPeoes = controllerJogo.getPosicoesPeoesJogador();
         for (int i = 0; i < 4; i++) {
-            Posicao2D posicao2DPeao = 
-            switch (posicoesPeoes[i].status) {
+            Posicao2D posicao2DPeao = switch (posicoesPeoes[i].status) {
                 case BASE -> Mappings.posicaoCasas.get(controllerJogo.getCorJogador())[posicoesPeoes[i].posicao];
-                case TABULEIRO -> Mappings.posicoesTabuleiro[posicoesPeoes[i].posicao];
+                case TABULEIRO -> Mappings.posicoesTabuleiro[Mappings.calcularPosicao(controllerJogo.getCorJogador(),
+                        posicoesPeoes[i].posicao)];
                 case FILA -> Mappings.posicaoFilas.get(controllerJogo.getCorJogador())[posicoesPeoes[i].posicao];
                 case FINAL -> null;
             };

@@ -138,4 +138,11 @@ public class Mappings {
         // 8, 0, fim do caminho principal
         new Posicao2D(8, 0)
     };
+    public static final Map<Cor, Integer> offsets = Map.of(
+        Cor.AMARELO, 0,
+        Cor.VERMELHO, 26);
+    public static int calcularPosicao(Cor cor, int posicao) {
+        int offset = Mappings.offsets.get(cor);
+        return (posicao + offset) % 52;
+    }
 }

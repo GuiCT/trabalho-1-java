@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -28,6 +29,7 @@ public class MainWindow extends JFrame {
     private JMenuItem menuSerHost;
     private JMenuItem menuVisualizarRegras;
     private JPanel panelJogadas;
+    private JLabel labelVez;
     private UITabuleiro panelTabuleiro;
     private JTextArea textAreaJogadas;
     private static final String regras = """
@@ -56,6 +58,7 @@ public class MainWindow extends JFrame {
         menuSerHost = new JMenuItem("Ser host");
         menuVisualizarRegras = new JMenuItem("Visualizar");
         panelJogadas = new JPanel();
+        labelVez = new JLabel("Aguardando início do jogo...");
         panelTabuleiro = new UITabuleiro();
         textAreaJogadas = new JTextArea();
         controllerJogo = new ControllerJogo(this, panelTabuleiro);
@@ -69,6 +72,8 @@ public class MainWindow extends JFrame {
 
         BorderLayout panelJogadasLayout = new BorderLayout();
         panelJogadas.setLayout(panelJogadasLayout);
+
+        panelJogadas.add(labelVez, BorderLayout.NORTH);
 
         textAreaJogadas.setEditable(false);
         textAreaJogadas.setColumns(20);
@@ -99,6 +104,14 @@ public class MainWindow extends JFrame {
 
         buttonDado.addActionListener(this::girarDado);
         menuVisualizarRegras.addActionListener(this::visualizarRegras);
+    }
+
+    public void setLabelVez(String text) {
+        labelVez.setText(text);
+    }
+
+    public void appendToJogadas(String text) {
+        textAreaJogadas.append(text);
     }
 
     private void visualizarRegras(ActionEvent evt) {

@@ -36,9 +36,9 @@ public class InserirIP extends JFrame {
             String ip = textField.getText();
             InetAddress address = InetAddress.getByName(ip);
             controllerJogo.joinMatch(address.getHostAddress());
-            this.dispose();
             JOptionPane.showMessageDialog(this, "Conexão estabelecida com o host", "Sucesso!",
-                    JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, e, "Erro ao conectar", JOptionPane.ERROR_MESSAGE);
         }

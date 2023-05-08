@@ -17,6 +17,11 @@ public class Casa extends JButton {
 
     @Override
     protected void paintComponent(Graphics g) {
+        int x = (getWidth()) / 4;
+        int y = (getHeight()) / 4;
+        int diameterWidth = getWidth() / 2;
+        int diameterHeight = getHeight() / 2;
+
         super.paintComponent(g);
         if (corPeao != null) {
             Graphics2D g2d = (Graphics2D) g.create();
@@ -32,14 +37,22 @@ public class Casa extends JButton {
                 g2d.setColor(Color.WHITE);
             }
 
-            g2d.fillOval(10, 10, 30, 30);
+            g2d.fillOval(x, y, diameterWidth, diameterHeight);
+            
             // Draws the border
             if(corPeao != Cor.BRANCO)
                 g2d.setColor(Color.BLACK);
-            g2d.drawOval(10, 10, 30, 30);
+            g2d.drawOval(x, y, diameterWidth, diameterHeight);
 
             g2d.dispose();
         }
+    }
+
+    // on resize
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        repaint();
     }
 
     public Color getCor() {
