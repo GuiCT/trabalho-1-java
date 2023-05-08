@@ -146,7 +146,7 @@ public class Casa extends JButton {
         int differentColors = coresDiferentes.size();
         int coordinateX, coordinateY;
         //se houver apenas 1 cor de peão, coloque no centro, senão, divida em quatro e coloque cada cor em um canto
-        if(differentColors != 1) {
+        if(differentColors == 1) {
             coordinateX = (getWidth()) / 2;
             coordinateY = (getHeight()) / 2;
         }else{

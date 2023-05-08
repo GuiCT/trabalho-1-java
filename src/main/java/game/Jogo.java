@@ -83,17 +83,17 @@ public class Jogo {
             // Verifica se há algum peão do oponente na posição atingida
             // Se houver, esse pẽao é colocado na base
             // Caso seja uma posição especial, não é verificado se há peão
-            int posicaoReal = Mappings.calcularPosicao(corJogador, posicaoBaseAtual.posicao);
+            int posicaoReal = Mappings.calcularPosicao(jogador ? corJogador : corOponente, posicaoBaseAtual.posicao);
 
             if (!verificarPosicaoEspecial(posicaoReal)) {
                 List<Integer> conflitos = verificarConflito(jogador, posicaoReal);
                 for (int i : conflitos) {
                     if (jogador) {
                         this.posicoesPeoesOponente[i].status = Status.BASE;
-                        this.posicoesPeoesOponente[i].posicao = 0;
+                        this.posicoesPeoesOponente[i].posicao = i;
                     } else {
                         this.posicoesPeoesJogador[i].status = Status.BASE;
-                        this.posicoesPeoesJogador[i].posicao = 0;
+                        this.posicoesPeoesJogador[i].posicao = i;
                     }
                 }
             }
@@ -125,11 +125,14 @@ public class Jogo {
 
         // Se jogador for true, verifica se há conflito com oponente
         // Se jogador for false, verifica se há conflito com jogador
+        Posicao[] posicoes = jogador ? this.posicoesPeoesOponente : this.posicoesPeoesJogador;
         for (int i = 0; i < 4; i++) {
-            int posicaoBase = jogador ? this.posicoesPeoesOponente[i].posicao : this.posicoesPeoesJogador[i].posicao;
-            int posicaoReal = Mappings.calcularPosicao(jogador ? this.corOponente : this.corJogador, posicaoBase);
-            if (posicaoReal == posicao) {
-                conflitos.add(i);
+            if(posicoes[i].status == Status.TABULEIRO){
+                int posicaoBase = posicoes[i].posicao;
+                int posicaoReal = Mappings.calcularPosicao(jogador ? this.corOponente : this.corJogador, posicaoBase);
+                if (posicaoReal == posicao) {
+                    conflitos.add(i);
+                }
             }
         }
 
