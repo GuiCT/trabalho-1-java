@@ -81,7 +81,7 @@ public class Jogo {
                 // Verifica se há algum peão do oponente na posição atingida
                 // Se houver, esse pẽao é colocado na base
                 // Caso seja uma posição especial, não é verificado se há peão
-                int posicaoReal = Mappings.calcularPosicao(jogador ? corJogador : corOponente, posicaoBaseAtual.posicao);
+                int posicaoReal = Mappings.calcularPosicaoRealTabuleiro(jogador ? corJogador : corOponente, posicaoBaseAtual.posicao);
 
                 if (!verificarPosicaoEspecial(posicaoReal)) {
                     List<Integer> conflitos = verificarConflito(jogador, posicaoReal);
@@ -124,7 +124,7 @@ public class Jogo {
         for (int i = 0; i < 4; i++) {
             if(posicoes[i].status == Status.TABULEIRO){
                 int posicaoBase = posicoes[i].posicao;
-                int posicaoReal = Mappings.calcularPosicao(jogador ? this.corOponente : this.corJogador, posicaoBase);
+                int posicaoReal = Mappings.calcularPosicaoRealTabuleiro(jogador ? this.corOponente : this.corJogador, posicaoBase);
                 if (posicaoReal == posicao) {
                     conflitos.add(i);
                 }

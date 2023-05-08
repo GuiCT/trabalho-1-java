@@ -3,8 +3,12 @@ package view;
 import java.util.Map;
 
 import game.Cor;
+import game.Posicao;
+import game.Status;
 
 public class Mappings {
+    // ======================================================================
+    // Posições das casas na base de cada cor.
     public static final Posicao2D[] casasVerde = {
         new Posicao2D(1, 1),
         new Posicao2D(1, 4),
@@ -36,6 +40,7 @@ public class Mappings {
         Cor.AZUL, casasAzul
     );
     // ======================================================================
+    // Posições nas filas de cada cor
     public static final Posicao2D[] filaVerde = {
         new Posicao2D(1, 7),
         new Posicao2D(2, 7),
@@ -71,6 +76,7 @@ public class Mappings {
         Cor.AZUL, filaAzul
     );
     // ======================================================================
+    // Posições no tabuleiro, compartilhadas entre as cores
     public static final Posicao2D[] posicoesTabuleiro = {
         // 8, 1 até 8, 5
         new Posicao2D(8, 1),
@@ -138,10 +144,25 @@ public class Mappings {
         // 8, 0, fim do caminho principal
         new Posicao2D(8, 0)
     };
+    // Offsets utilizados para cada cor para calcular a "posição real"
     public static final Map<Cor, Integer> offsets = Map.of(
         Cor.AMARELO, 0,
         Cor.VERMELHO, 26);
-    public static int calcularPosicao(Cor cor, int posicao) {
+    // Método que calcula a posição 2D com base no Status (enum) e posição (numérica)
+    public static Posicao2D calcularPosicao2D(Posicao pos, Cor cor) {
+        Status statusPos = pos.status;
+        int offsetPos = pos.posicao;
+
+        return switch(statusPos) {
+            case BASE -> Mappings.posicaoCasas.get(cor)[offsetPos];
+            case TABULEIRO -> Mappings.posicoesTabuleiro[calcularPosicaoRealTabuleiro(cor, offsetPos)];
+            case FILA -> Mappings.posicaoFilas.get(cor)[offsetPos];
+            case FINAL -> null;
+        };
+    }
+    // Método que calcula a posição real no tabuleiro com base na posição de
+    // um peão de determinada cor.  
+    public static int calcularPosicaoRealTabuleiro(Cor cor, int posicao) {
         int offset = Mappings.offsets.get(cor);
         return (posicao + offset) % 52;
     }

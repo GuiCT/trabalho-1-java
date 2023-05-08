@@ -157,7 +157,7 @@ public class UITabuleiro extends JPanel {
                 casas[posicao2DAnterior.y][posicao2DAnterior.x].removerPeao(cor);
             }
             case TABULEIRO -> {
-                Posicao2D posicao2DAnterior = Mappings.posicoesTabuleiro[Mappings.calcularPosicao(cor,
+                Posicao2D posicao2DAnterior = Mappings.posicoesTabuleiro[Mappings.calcularPosicaoRealTabuleiro(cor,
                         posicaoAnterior.posicao)];
                 casas[posicao2DAnterior.y][posicao2DAnterior.x].removerPeao(cor);
             }
@@ -175,7 +175,7 @@ public class UITabuleiro extends JPanel {
                 casas[posicao2Dnova.y][posicao2Dnova.x].adicionarPeao(cor);
             }
             case TABULEIRO -> {
-                Posicao2D posicao2Dnova = Mappings.posicoesTabuleiro[Mappings.calcularPosicao(cor,
+                Posicao2D posicao2Dnova = Mappings.posicoesTabuleiro[Mappings.calcularPosicaoRealTabuleiro(cor,
                         posicaoAtual.posicao)];
                 casas[posicao2Dnova.y][posicao2Dnova.x].adicionarPeao(cor);
             }
@@ -195,7 +195,7 @@ public class UITabuleiro extends JPanel {
         for (int i = 0; i < 4; i++) {
             Posicao2D posicao2DPeao = switch (posicoesPeoes[i].status) {
                 case BASE -> Mappings.posicaoCasas.get(controllerJogo.getCorJogador())[posicoesPeoes[i].posicao];
-                case TABULEIRO -> Mappings.posicoesTabuleiro[Mappings.calcularPosicao(controllerJogo.getCorJogador(),
+                case TABULEIRO -> Mappings.posicoesTabuleiro[Mappings.calcularPosicaoRealTabuleiro(controllerJogo.getCorJogador(),
                         posicoesPeoes[i].posicao)];
                 case FILA -> Mappings.posicaoFilas.get(controllerJogo.getCorJogador())[posicoesPeoes[i].posicao];
                 case FINAL -> null;
@@ -206,162 +206,5 @@ public class UITabuleiro extends JPanel {
             }
         }
         controllerJogo.setPeaoSelecionado(null);
-    }
-
-    public void peaoDaBaseParaTabuleiro(int casa, Cor cor) {
-        if (casa == 0)
-            if (cor == Cor.VERDE)
-                casas[1][1].adicionarPeao(Cor.BRANCO);
-            else if (cor == Cor.AMARELO)
-                casas[1][13].adicionarPeao(Cor.BRANCO);
-            else if (cor == Cor.VERMELHO)
-                casas[13][1].adicionarPeao(Cor.BRANCO);
-            else if (cor == Cor.AZUL)
-                casas[13][13].adicionarPeao(Cor.BRANCO);
-
-        if (casa == 1)
-            if (cor == Cor.VERDE)
-                casas[1][4].adicionarPeao(Cor.VERDE);
-            else if (cor == Cor.AMARELO)
-                casas[1][10].adicionarPeao(Cor.AMARELO);
-            else if (cor == Cor.VERMELHO)
-                casas[10][1].adicionarPeao(Cor.VERMELHO);
-            else if (cor == Cor.AZUL)
-                casas[10][13].adicionarPeao(Cor.AZUL);
-
-        if (casa == 2)
-            if (cor == Cor.VERDE)
-                casas[4][1].adicionarPeao(Cor.VERDE);
-            else if (cor == Cor.AMARELO)
-                casas[4][13].adicionarPeao(Cor.AMARELO);
-            else if (cor == Cor.VERMELHO)
-                casas[13][4].adicionarPeao(Cor.VERMELHO);
-            else if (cor == Cor.AZUL)
-                casas[13][10].adicionarPeao(Cor.AZUL);
-
-        if (casa == 3)
-            if (cor == Cor.VERDE)
-                casas[4][4].adicionarPeao(Cor.VERDE);
-            else if (cor == Cor.AMARELO)
-                casas[4][10].adicionarPeao(Cor.AMARELO);
-            else if (cor == Cor.VERMELHO)
-                casas[10][4].adicionarPeao(Cor.VERMELHO);
-            else if (cor == Cor.AZUL)
-                casas[10][10].adicionarPeao(Cor.AZUL);
-
-        if (cor == Cor.VERDE) {
-            casas[6][1].adicionarPeao(Cor.VERDE);
-        } else if (cor == Cor.AMARELO) {
-            casas[1][8].adicionarPeao(Cor.AMARELO);
-        } else if (cor == Cor.VERMELHO) {
-            casas[13][6].adicionarPeao(Cor.VERMELHO);
-        } else if (cor == Cor.AZUL) {
-            casas[8][13].adicionarPeao(Cor.AZUL);
-        }
-    }
-
-    public void moverPeca(int i, int j, Cor cor, int qtdCasa) {
-        casas[i][j].setCorPeao(Cor.BRANCO);
-        if (i == 6 && j < 6) {
-            if ((j + qtdCasa) > 5) {
-                int aux = j - 5;
-                casas[(6 - (qtdCasa + aux))][6].setCorPeao(cor);
-            } else {
-                casas[6][j + qtdCasa].setCorPeao(cor);
-            }
-        } else if (i < 6 && j == 6) {
-            if ((i - qtdCasa) < 0) {
-                int aux = i - 6;
-                if ((qtdCasa + aux + 6) > 8) {
-                    if (cor == Cor.AMARELO) {
-                        casas[1][7].setCorPeao(cor);
-                    } else {
-                        aux = aux - 2;
-                        casas[qtdCasa + aux][8].setCorPeao(cor);
-                    }
-                } else {
-                    if ((qtdCasa - aux) > 8) {
-                        aux = 8 - (j - aux);
-                        casas[qtdCasa + aux][8].setCorPeao(cor);
-
-                    } else
-                        casas[0][qtdCasa - aux].setCorPeao(cor);
-                }
-            } else {
-                casas[i - qtdCasa][6].setCorPeao(cor);
-            }
-        } else if (i < 6 && j == 8) {
-            if ((i + qtdCasa) > 5) {
-                int aux = i - 5;
-                casas[6][8 + qtdCasa + aux].setCorPeao(cor);
-
-            } else {
-                casas[i + qtdCasa][8].setCorPeao(cor);
-            }
-        } else if (i == 6 & j > 8) {
-            if ((j + qtdCasa) > 14) {
-                int aux = j - 8;
-                if ((qtdCasa + aux) > 8) {
-                    if (cor == Cor.AZUL) {
-                        casas[7][13].setCorPeao(cor);
-                    } else {
-                        aux = qtdCasa + aux - 8;
-                        casas[8][14 - aux].setCorPeao(cor);
-                    }
-                } else
-                    casas[8 + (qtdCasa - aux)][14].setCorPeao(cor);
-            } else {
-                casas[6][j + qtdCasa].setCorPeao(cor);
-            }
-
-        } else if (i == 8 && j > 8) {
-            if ((j - qtdCasa) < 9) {
-                int aux = j - 9;
-                casas[8 + (qtdCasa - aux)][8].setCorPeao(cor);
-
-            } else {
-                casas[8][j - qtdCasa].setCorPeao(cor);
-            }
-        } else if (i > 8 && j == 8) {
-            if ((i + qtdCasa) > 14) {
-                int aux = 14 - i;
-                if ((qtdCasa - aux) < 6) {
-                    if (cor == Cor.VERMELHO) {
-                        casas[13][7].setCorPeao(cor);
-                    } else {
-                        aux = aux + 2;
-                        casas[14 - (qtdCasa - aux)][6].setCorPeao(cor);
-                    }
-                } else
-                    casas[14][6 + (qtdCasa - aux)].setCorPeao(cor);
-            } else {
-                casas[i + qtdCasa][8].setCorPeao(cor);
-            }
-        } else if (i > 8 & j == 6) {
-            if ((i - qtdCasa) < 9) {
-                int aux = i - 9;
-                casas[8][6 - (qtdCasa - aux)].setCorPeao(cor);
-
-            } else {
-                casas[i - qtdCasa][6].setCorPeao(cor);
-            }
-        }
-
-        if (i == 8 && j < 7) {
-            if ((j - qtdCasa) < 1) {
-                int aux = j - 6;
-                if (i + aux < 6) {
-                    if (cor == Cor.VERDE) {
-                        casas[7][1].setCorPeao(cor);
-                    } else {
-                        aux = 6 - (i - aux);
-                        casas[6][aux].setCorPeao(cor);
-                    }
-                } else
-                    casas[i + aux][0].setCorPeao(cor);
-            } else {
-                casas[8][j - qtdCasa].setCorPeao(cor);
-            }
-        }
     }
 }
