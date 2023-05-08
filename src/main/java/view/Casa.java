@@ -1,22 +1,18 @@
 package view;
 
 import game.Cor;
-import org.w3c.dom.ls.LSOutput;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class Casa extends JButton {
-
-    private int pos;
+    public final Posicao2D posicao;
     private Color cor;
     private Cor corPeao;
 
-    public Casa(){
-        this.pos = -1;
+    public Casa(Posicao2D posicao) {
         setPreferredSize(new Dimension(50, 50));
         setBackground(Color.WHITE);
+        this.posicao = posicao;
     }
 
     @Override
@@ -46,14 +42,6 @@ public class Casa extends JButton {
         }
     }
 
-    public int getPos() {
-        return pos;
-    }
-
-    public void setPos(int pos) {
-        this.pos = pos;
-    }
-
     public Color getCor() {
         return cor;
     }
@@ -64,12 +52,11 @@ public class Casa extends JButton {
 
     public void setCorPeao(Cor corPeao) {
         this.corPeao = corPeao;
+        // Force redraw
+        repaint();
     }
 
     public Cor getCorPeao() {
         return corPeao;
     }
-
-
-
 }

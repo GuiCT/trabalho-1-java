@@ -6,117 +6,116 @@ import java.util.Map;
 
 public class Jogo {
     private static final Map<Cor, Integer> offsets = Map.of(
-        Cor.AMARELO, 0,
-        Cor.VERMELHO, 26
-    );
-    private static final int[] posicoesEspeciais = {0, 8, 13, 21, 26, 34, 39, 47};
+            Cor.AMARELO, 26,
+            Cor.VERMELHO, 0);
+    private static final int[] posicoesEspeciais = { 8, 21, 34, 47 };
     private static final int casasAteFim = 50;
     private static final int casasFila = 6;
     // ------------------------------------------------------------------------
     private Cor corJogador;
     private Cor corOponente;
-    private boolean jogadorVencedor;
-    private Status[] statusPeoesJogador;
-    private Status[] statusPeoesOponente;
-    private int[] posicoesJogador;
-    private int[] posicoesOponente;
+    private Posicao[] posicoesPeoesJogador;
+    private Posicao[] posicoesPeoesOponente;
 
     public Jogo(Cor corJogador) {
         this.corJogador = corJogador;
         this.corOponente = corJogador == Cor.AMARELO ? Cor.VERMELHO : Cor.AMARELO;
-        this.jogadorVencedor = false;
-        this.statusPeoesJogador = new Status[4];
-        this.statusPeoesOponente = new Status[4];
+        this.posicoesPeoesJogador = new Posicao[4];
+        this.posicoesPeoesOponente = new Posicao[4];
 
         for (int i = 0; i < 4; i++) {
-            this.statusPeoesJogador[i] = Status.BASE;
-            this.statusPeoesOponente[i] = Status.BASE;
+            this.posicoesPeoesJogador[i] = new Posicao(Status.BASE, i);
+            this.posicoesPeoesOponente[i] = new Posicao(Status.BASE, i);
         }
-
-        this.posicoesJogador = new int[4];
-        this.posicoesOponente = new int[4];
     }
 
-    public boolean getJogadorVencedor() {
-        return this.jogadorVencedor;
+    public Cor getCorJogador() {
+        return this.corJogador;
+    }
+
+    public Cor getCorOponente() {
+        return this.corOponente;
+    }
+
+    public Posicao[] getPosicoesPeoesJogador() {
+        return this.posicoesPeoesJogador;
+    }
+
+    public Posicao[] getPosicoesPeoesOponente() {
+        return this.posicoesPeoesOponente;
     }
 
     public void realizarMovimento(boolean jogador, int peao, int valorDado) {
-        int posicaoBaseAtual;
-        Status statusAtual;
+        Posicao posicaoBaseAtual;
 
         if (jogador) {
-            posicaoBaseAtual = this.posicoesJogador[peao];
-            statusAtual = this.statusPeoesJogador[peao];
+            posicaoBaseAtual = this.posicoesPeoesJogador[peao];
         } else {
-            posicaoBaseAtual = this.posicoesOponente[peao];
-            statusAtual = this.statusPeoesOponente[peao];
+            posicaoBaseAtual = this.posicoesPeoesOponente[peao];
         }
-        
+
         // Decisão é feita com base no status atual
-        if (statusAtual == Status.BASE) {
+        if (posicaoBaseAtual.status == Status.BASE) {
             // Peão só pode sair da base se o valor do dado for 6
             // É colocado na posição 0
             if (valorDado == 6) {
-                statusAtual = Status.TABULEIRO;
-                posicaoBaseAtual = 0;
+                posicaoBaseAtual.status = Status.TABULEIRO;
+                posicaoBaseAtual.posicao = 0;
             }
-        } else if (statusAtual == Status.TABULEIRO) {
+        } else if (posicaoBaseAtual.status == Status.TABULEIRO) {
             // Se o peão estiver no tabuleiro, é somado o valor do dado à sua posição atual
-            posicaoBaseAtual += valorDado;
+            posicaoBaseAtual.posicao += valorDado;
 
             // Se o peão passar da última casa, ele é colocado na fila final
             // E a posição atual é atualizada para a posição da fila final
-            if (posicaoBaseAtual >= casasAteFim) {
-                statusAtual = Status.FILA;
-                posicaoBaseAtual -= casasAteFim;
-                
-                if (posicaoBaseAtual == casasFila) {
+            if (posicaoBaseAtual.posicao >= casasAteFim) {
+                posicaoBaseAtual.status = Status.FILA;
+                posicaoBaseAtual.posicao -= casasAteFim;
+
+                if (posicaoBaseAtual.posicao == casasFila) {
                     // Chegou no final!
-                    statusAtual = Status.FINAL;
-                    posicaoBaseAtual = 0;
-                } else if (posicaoBaseAtual > casasFila) {
+                    posicaoBaseAtual.status = Status.FINAL;
+                    posicaoBaseAtual.posicao = 0;
+                } else if (posicaoBaseAtual.posicao > casasFila) {
                     // Se passar da última casa da fila
                     // Ele é colocado na última casa antes do fim
-                    posicaoBaseAtual = casasFila - 1;
+                    posicaoBaseAtual.posicao = casasFila - 1;
                 }
             }
 
             // Verifica se há algum peão do oponente na posição atingida
             // Se houver, esse pẽao é colocado na base
             // Caso seja uma posição especial, não é verificado se há peão
-            int posicaoReal = calcularPosicao(jogador, posicaoBaseAtual);
+            int posicaoReal = calcularPosicao(jogador, posicaoBaseAtual.posicao);
 
             if (!verificarPosicaoEspecial(posicaoReal)) {
                 List<Integer> conflitos = verificarConflito(jogador, posicaoReal);
                 for (int i : conflitos) {
                     if (jogador) {
-                        this.statusPeoesOponente[i] = Status.BASE;
-                        this.posicoesOponente[i] = 0;
+                        this.posicoesPeoesOponente[i].status = Status.BASE;
+                        this.posicoesPeoesOponente[i].posicao = 0;
                     } else {
-                        this.statusPeoesJogador[i] = Status.BASE;
-                        this.posicoesJogador[i] = 0;
+                        this.posicoesPeoesJogador[i].status = Status.BASE;
+                        this.posicoesPeoesJogador[i].posicao = 0;
                     }
                 }
             }
-        } else if (statusAtual == Status.FILA) {
+        } else if (posicaoBaseAtual.status == Status.FILA) {
             // Se o peão passar da última casa, ele é colocado na casa de chegada
-            if (posicaoBaseAtual + valorDado <= casasFila) {
-                posicaoBaseAtual = posicaoBaseAtual + valorDado;
-                if (posicaoBaseAtual == casasFila) {
+            if (posicaoBaseAtual.posicao + valorDado <= casasFila) {
+                posicaoBaseAtual.posicao = posicaoBaseAtual.posicao + valorDado;
+                if (posicaoBaseAtual.posicao == casasFila) {
                     // Chegou no final!
-                    statusAtual = Status.FINAL;
-                    posicaoBaseAtual = 0;
+                    posicaoBaseAtual.status = Status.FINAL;
+                    posicaoBaseAtual.posicao = 0;
                 }
             }
         }
 
         if (jogador) {
-            this.posicoesJogador[peao] = posicaoBaseAtual;
-            this.statusPeoesJogador[peao] = statusAtual;
+            this.posicoesPeoesJogador[peao] = posicaoBaseAtual;
         } else {
-            this.posicoesOponente[peao] = posicaoBaseAtual;
-            this.statusPeoesOponente[peao] = statusAtual;
+            this.posicoesPeoesOponente[peao] = posicaoBaseAtual;
         }
     }
 
@@ -131,9 +130,7 @@ public class Jogo {
         // Se jogador for true, verifica se há conflito com oponente
         // Se jogador for false, verifica se há conflito com jogador
         for (int i = 0; i < 4; i++) {
-            int posicaoBase = jogador ?
-                this.posicoesOponente[i] :
-                this.posicoesJogador[i];
+            int posicaoBase = jogador ? this.posicoesPeoesOponente[i].posicao : this.posicoesPeoesJogador[i].posicao;
             int posicaoReal = calcularPosicao(!jogador, posicaoBase);
             if (posicaoReal == posicao) {
                 conflitos.add(i);
@@ -153,60 +150,21 @@ public class Jogo {
         return false;
     }
 
-    // Utilizando para teste
-    // TODO: Remover após realizar todos os testes
-    public static void main(String[] args) {
-        // Testando o jogo
-        Jogo jogo = new Jogo(Cor.AMARELO);
-        // Jogador 1 joga o peão 0 e sai da base
-        jogo.realizarMovimento(true, 0, 6);
-        // Jogador 2 joga o peão 0 e sai da base
-        jogo.realizarMovimento(false, 0, 6);
-        // Jogador 1 joga o peão 0 e vai para a casa 1 (1)
-        jogo.realizarMovimento(true, 0, 1);
-        // Jogador 2 joga o peão 0 e vai para a casa 6 (32)
-        jogo.realizarMovimento(false, 0, 6);
-        // Jogador 1 joga o peão 0 e vai para a casa 2 (2)
-        jogo.realizarMovimento(true, 0, 1);
-        // Jogador 2 joga o peão 0 e vai para a casa 12 (38)
-        jogo.realizarMovimento(false, 0, 6);
-        // Jogador 1 joga o peão 0 e vai para a casa 3 (3)
-        jogo.realizarMovimento(true, 0, 1);
-        // Jogador 2 joga o peão 0 e vai para a casa 18 (44)
-        jogo.realizarMovimento(false, 0, 6);
-        // Jogador 1 joga o peão 0 e vai para a casa 4 (4)
-        jogo.realizarMovimento(true, 0, 1);
-        // Jogador 2 joga o peão 0 e vai para a casa 24 (50)
-        jogo.realizarMovimento(false, 0, 6);
-        // Jogador 1 joga o peão 0 e vai para a casa 5 (5)
-        jogo.realizarMovimento(true, 0, 1);
-        // Jogador 2 joga o peão 0 e vai para a casa 30 (4)
-        jogo.realizarMovimento(false, 0, 6);
-        // Jogador 1 joga o peão 0 e vai para a casa 6 (6)
-        jogo.realizarMovimento(true, 0, 1);
-        // Jogador 2 joga o peão 0 e vai para a casa 32 (6)
-        // Conflito deve ocorrer.
-        jogo.realizarMovimento(false, 0, 2);
-    }
-
-    //verifica se o movimento do jogador resultou em vitoria
-    public boolean jogoFinalizado(boolean jogador){
-        if(jogador){
-            for(Status statusPeao: statusPeoesJogador){
-                if(statusPeao != Status.FINAL){
+    // verifica se o movimento do jogador resultou em vitoria
+    public boolean jogoFinalizado(boolean jogador) {
+        if (jogador) {
+            for (Posicao posicoesPeao : posicoesPeoesJogador) {
+                if (posicoesPeao.status != Status.FINAL) {
                     return false;
                 }
             }
-            jogadorVencedor = true;
             return true;
-        }
-        else {
-            for (Status statusPeao : statusPeoesOponente) {
-                if (statusPeao != Status.FINAL) {
+        } else {
+            for (Posicao posicoesPeao : posicoesPeoesOponente) {
+                if (posicoesPeao.status != Status.FINAL) {
                     return false;
                 }
             }
-            jogadorVencedor = false;
             return true;
         }
     }
