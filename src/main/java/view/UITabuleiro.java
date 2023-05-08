@@ -170,7 +170,7 @@ public class UITabuleiro extends JPanel {
                 casas[posicao2Dnova.y][posicao2Dnova.x].adicionarPeao(cor);
             }
             case FILA -> {
-                Posicao2D posicao2Dnova = Mappings.posicaoFilas.get(cor)[posicaoAtual.posicao - 1];
+                Posicao2D posicao2Dnova = Mappings.posicaoFilas.get(cor)[posicaoAtual.posicao];
                 casas[posicao2Dnova.y][posicao2Dnova.x].adicionarPeao(cor);
             }
             case FINAL -> {

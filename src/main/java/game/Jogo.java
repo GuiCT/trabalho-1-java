@@ -7,7 +7,7 @@ import view.Mappings;
 public class Jogo {
     private static final int[] posicoesEspeciais = { 0, 8, 21, 26, 34, 47 };
     private static final int casasAteFim = 50;
-    private static final int casasFila = 6;
+    private static final int casasFila = 5;
     // ------------------------------------------------------------------------
     private Cor corJogador;
     private Cor corOponente;
@@ -65,9 +65,9 @@ public class Jogo {
 
             // Se o peão passar da última casa, ele é colocado na fila final
             // E a posição atual é atualizada para a posição da fila final
-            if (posicaoBaseAtual.posicao >= casasAteFim) {
+            if (posicaoBaseAtual.posicao > casasAteFim) {
                 posicaoBaseAtual.status = Status.FILA;
-                posicaoBaseAtual.posicao -= casasAteFim;
+                posicaoBaseAtual.posicao -= casasAteFim + 1;
 
                 if (posicaoBaseAtual.posicao == casasFila) {
                     // Chegou no final!
@@ -78,24 +78,24 @@ public class Jogo {
                     // Ele é colocado na última casa antes do fim
                     posicaoBaseAtual.posicao = casasFila - 1;
                 }
-            }
+            }else{
+                // Verifica se há algum peão do oponente na posição atingida
+                // Se houver, esse pẽao é colocado na base
+                // Caso seja uma posição especial, não é verificado se há peão
+                int posicaoReal = Mappings.calcularPosicao(jogador ? corJogador : corOponente, posicaoBaseAtual.posicao);
 
-            // Verifica se há algum peão do oponente na posição atingida
-            // Se houver, esse pẽao é colocado na base
-            // Caso seja uma posição especial, não é verificado se há peão
-            int posicaoReal = Mappings.calcularPosicao(jogador ? corJogador : corOponente, posicaoBaseAtual.posicao);
-
-            if (!verificarPosicaoEspecial(posicaoReal)) {
-                List<Integer> conflitos = verificarConflito(jogador, posicaoReal);
-                for (int i : conflitos) {
-                    if (jogador) {
-                        this.posicoesPeoesOponente[i].status = Status.BASE;
-                        this.posicoesPeoesOponente[i].posicao = i;
-                    } else {
-                        this.posicoesPeoesJogador[i].status = Status.BASE;
-                        this.posicoesPeoesJogador[i].posicao = i;
+                if (!verificarPosicaoEspecial(posicaoReal)) {
+                    List<Integer> conflitos = verificarConflito(jogador, posicaoReal);
+                    for (int i : conflitos) {
+                        if (jogador) {
+                            this.posicoesPeoesOponente[i].status = Status.BASE;
+                            this.posicoesPeoesOponente[i].posicao = i;
+                        } else {
+                            this.posicoesPeoesJogador[i].status = Status.BASE;
+                            this.posicoesPeoesJogador[i].posicao = i;
+                        }
                     }
-                }
+                }               
             }
         } else if (posicaoBaseAtual.status == Status.FILA) {
             // Se o peão passar da última casa, ele é colocado na casa de chegada
@@ -113,10 +113,6 @@ public class Jogo {
             this.posicoesPeoesJogador[peao] = posicaoBaseAtual;
         } else {
             this.posicoesPeoesOponente[peao] = posicaoBaseAtual;
-        }
-
-        for(Posicao i:this.posicoesPeoesJogador){
-            System.out.println(i.posicao);
         }
     }
 

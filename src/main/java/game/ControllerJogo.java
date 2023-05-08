@@ -145,6 +145,11 @@ public class ControllerJogo {
         // Atualiza a view
         tabuleiro.atualizarPeoes(posicoesAnterioresJogador, posicoesAtuaisJogador, getCorJogador());
         tabuleiro.atualizarPeoes(posicoesAnterioresOponente, posicoesAtuaisOponente, getCorOponente());
+        
+        if(jogo.jogoFinalizado(false)){
+            JOptionPane.showMessageDialog(mainWindow, "Você Perdeu! KKKKKKK PATO!", "Fim de Jogo" , JOptionPane.INFORMATION_MESSAGE);
+        }
+        
 
         receberVez();
     }
@@ -186,10 +191,12 @@ public class ControllerJogo {
         tabuleiro.atualizarPeoes(posicoesAnterioresOponente, posicoesAtuaisOponente, getCorOponente());
         tabuleiro.atualizarPeoes(posicoesAnterioresJogador, posicoesAtuaisJogador, getCorJogador());
 
-
-        passarVez();
         
+        passarVez();
         dataOutputStream.writeUTF(movimento);
+        if(jogo.jogoFinalizado(true)){
+            JOptionPane.showMessageDialog(mainWindow, "Você ganhou! Xis Dê", "Fim de Jogo" , JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void awaitConnection() throws IOException {
