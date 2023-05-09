@@ -100,8 +100,6 @@ public class Casa extends JButton {
     }
 
     public void paintPawn(Graphics g) {
-        int x = (getWidth()) / 4;
-        int y = (getHeight()) / 4;
         int diameterWidth = getWidth() / 2;
         int diameterHeight = getHeight() / 2;
 
