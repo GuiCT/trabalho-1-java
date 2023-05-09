@@ -151,7 +151,7 @@ public class Mappings {
     // Método que calcula a posição 2D com base no Status (enum) e posição (numérica)
     public static Posicao2D calcularPosicao2D(Posicao pos, Cor cor) {
         Status statusPos = pos.status;
-        int offsetPos = pos.posicao;
+        int offsetPos = pos.offset;
 
         return switch(statusPos) {
             case BASE -> Mappings.posicaoCasas.get(cor)[offsetPos];

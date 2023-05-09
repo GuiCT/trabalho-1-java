@@ -113,6 +113,9 @@ public class ControllerJogo {
 
     public void moverPeao(int valorDado) throws IOException {
         if (this.turn) {
+            if (peaoSelecionado == null)
+                JOptionPane.showMessageDialog(mainWindow, "Selecione um peão primeiro!", "Erro",
+                        JOptionPane.ERROR_MESSAGE);
             moverPeaoEEnviarMensagem(peaoSelecionado, valorDado);
         }
     }
@@ -145,13 +148,14 @@ public class ControllerJogo {
         // Atualiza a view
         tabuleiro.atualizarPeoes(posicoesAnterioresJogador, posicoesAtuaisJogador, getCorJogador());
         tabuleiro.atualizarPeoes(posicoesAnterioresOponente, posicoesAtuaisOponente, getCorOponente());
-        
-        if(jogo.jogoFinalizado(false)){
-            JOptionPane.showMessageDialog(mainWindow, "Você Perdeu! KKKKKKK PATO!", "Fim de Jogo" , JOptionPane.INFORMATION_MESSAGE);
+
+        if (jogo.jogoFinalizado(false)) {
+            JOptionPane.showMessageDialog(mainWindow, "Você Perdeu! KKKKKKK PATO!", "Fim de Jogo",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
-        
 
         receberVez();
+        mainWindow.appendToJogadas("[Oponente] - Peão: " + peaoMovido + ", valor do dado: " + valorDado + "!\n");
     }
 
     public boolean verificarVitoria(boolean jogador) {
@@ -191,11 +195,12 @@ public class ControllerJogo {
         tabuleiro.atualizarPeoes(posicoesAnterioresOponente, posicoesAtuaisOponente, getCorOponente());
         tabuleiro.atualizarPeoes(posicoesAnterioresJogador, posicoesAtuaisJogador, getCorJogador());
 
-        
         passarVez();
+        mainWindow.appendToJogadas("[Você] - Peão: " + numPeao + ", valor do dado: " + valorDado + "!\n");
         dataOutputStream.writeUTF(movimento);
-        if(jogo.jogoFinalizado(true)){
-            JOptionPane.showMessageDialog(mainWindow, "Você ganhou! Xis Dê", "Fim de Jogo" , JOptionPane.INFORMATION_MESSAGE);
+        if (jogo.jogoFinalizado(true)) {
+            JOptionPane.showMessageDialog(mainWindow, "Você ganhou! Xis Dê", "Fim de Jogo",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -213,6 +218,7 @@ public class ControllerJogo {
     }
 
     private void receberVez() {
+        peaoSelecionado = null;
         turn = true;
         mainWindow.setLabelVez("Sua vez");
     }

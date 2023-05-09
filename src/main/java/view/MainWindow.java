@@ -120,9 +120,6 @@ public class MainWindow extends JFrame {
 
     private void girarDado(ActionEvent evt) {
         int generatedNumber = 1 + (int) (Math.random() * 6);
-        generatedNumber = Integer.parseInt( JOptionPane.showInputDialog(this, "Text"));
-        String toAppend = Integer.toString(generatedNumber) + "\n";
-        textAreaJogadas.append(toAppend);
         try {
             controllerJogo.moverPeao(generatedNumber);
         } catch (IOException e) {

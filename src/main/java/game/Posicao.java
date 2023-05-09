@@ -2,15 +2,15 @@ package game;
 
 public class Posicao {
     public Status status;
-    public int posicao;
+    public int offset;
 
-    public Posicao(Status status, int posicao) {
+    public Posicao(Status status, int offset) {
         this.status = status;
-        this.posicao = posicao;
+        this.offset = offset;
     }
 
     @Override
     public Posicao clone() {
-        return new Posicao(this.status, this.posicao);
+        return new Posicao(this.status, this.offset);
     }
 }

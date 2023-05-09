@@ -11,6 +11,7 @@ public class Casa extends JButton {
     private Cor corPeao;
 
     private ArrayList<Cor> peoes;
+
     public Casa(Posicao2D posicao) {
         setPreferredSize(new Dimension(50, 50));
         setBackground(Color.WHITE);
@@ -20,74 +21,44 @@ public class Casa extends JButton {
 
     @Override
     protected void paintComponent(Graphics g) {
-        /*
-        int x = (getWidth()) / 4;
-        int y = (getHeight()) / 4;
-        int diameterWidth = getWidth() / 2;
-        int diameterHeight = getHeight() / 2;
-
-        super.paintComponent(g);
-
-        if (corPeao != null) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            if (corPeao == Cor.AZUL) {
-                g2d.setColor(Color.BLUE);
-            } else if (corPeao == Cor.VERDE) {
-                g2d.setColor(Color.GREEN);
-            } else if (corPeao == Cor.VERMELHO) {
-                g2d.setColor(Color.RED);
-            } else if (corPeao == Cor.AMARELO) {
-                g2d.setColor(Color.YELLOW);
-            } else {
-                g2d.setColor(Color.WHITE);
-            }
-
-            g2d.fillOval(x, y, diameterWidth, diameterHeight);
-            
-            // Draws the border
-            if(corPeao != Cor.BRANCO)
-                g2d.setColor(Color.BLACK);
-            g2d.drawOval(x, y, diameterWidth, diameterHeight);
-
-            g2d.dispose();
-        }*/
         super.paintComponent(g);
         HashMap<Cor, Integer> coresDiferentes = new HashMap<Cor, Integer>();
-        for(Cor cor: peoes){
-            if(!coresDiferentes.containsKey(cor)){
+        for (Cor cor : peoes) {
+            if (!coresDiferentes.containsKey(cor)) {
                 coresDiferentes.put(cor, 1);
-            }else{
-                coresDiferentes.replace(cor, coresDiferentes.get(cor)+1);
+            } else {
+                coresDiferentes.replace(cor, coresDiferentes.get(cor) + 1);
             }
         }
         int differentColors = coresDiferentes.size();
         int coordinateX, coordinateY, coordinateXCircle, coordinateYCircle;
 
-        if(differentColors == 0){
+        if (differentColors == 0) {
             return;
         }
-        //se houver apenas 1 cor de peão, coloque no centro, senão, divida em quatro e coloque cada cor em um canto
-        if(differentColors == 1) {
-            coordinateX = (getWidth())/2;
-            coordinateY = (getHeight())/2;
-            coordinateXCircle = (getWidth())/4;
-            coordinateYCircle = (getHeight())/4;
-        }else{
+        // se houver apenas 1 cor de peão, coloque no centro, senão, divida em quatro e
+        // coloque cada cor em um canto
+        if (differentColors == 1) {
+            coordinateX = (getWidth()) / 2;
+            coordinateY = (getHeight()) / 2;
+            coordinateXCircle = (getWidth()) / 4;
+            coordinateYCircle = (getHeight()) / 4;
+        } else {
             coordinateX = (getWidth()) / 4;
             coordinateY = (getHeight()) / 4;
-            coordinateXCircle = (getWidth())/2;
-            coordinateYCircle = (getHeight())/2;
+            coordinateXCircle = (getWidth()) / 2;
+            coordinateYCircle = (getHeight()) / 2;
         }
 
-        //calcula tamanho dos peoes
-        int diameterWidth = (getWidth())/2;
-        int diameterHeight = (getHeight())/2;
+        // calcula tamanho dos peoes
+        int diameterWidth = (getWidth()) / 2;
+        int diameterHeight = (getHeight()) / 2;
 
-        //count auxilia no mapeamento de peões
+        // count auxilia no mapeamento de peões
         int count = 0;
-        for(Map.Entry<Cor, Integer> dadosCor: coresDiferentes.entrySet()){
+        for (Map.Entry<Cor, Integer> dadosCor : coresDiferentes.entrySet()) {
             Graphics2D g2d = (Graphics2D) g.create();
-            switch (count){
+            switch (count) {
                 case 0:
                     break;
                 case 1:
@@ -128,7 +99,7 @@ public class Casa extends JButton {
         }
     }
 
-    public void paintPawn(Graphics g){
+    public void paintPawn(Graphics g) {
         int x = (getWidth()) / 4;
         int y = (getHeight()) / 4;
         int diameterWidth = getWidth() / 2;
@@ -136,26 +107,27 @@ public class Casa extends JButton {
 
         super.paintComponent(g);
         HashMap<Cor, Integer> coresDiferentes = new HashMap<Cor, Integer>();
-        for(Cor cor: peoes){
-            if(!coresDiferentes.containsKey(cor)){
+        for (Cor cor : peoes) {
+            if (!coresDiferentes.containsKey(cor)) {
                 coresDiferentes.put(cor, 1);
-            }else{
-                coresDiferentes.replace(cor, coresDiferentes.get(cor)+1);
+            } else {
+                coresDiferentes.replace(cor, coresDiferentes.get(cor) + 1);
             }
         }
         int differentColors = coresDiferentes.size();
         int coordinateX, coordinateY;
-        //se houver apenas 1 cor de peão, coloque no centro, senão, divida em quatro e coloque cada cor em um canto
-        if(differentColors == 1) {
+        // se houver apenas 1 cor de peão, coloque no centro, senão, divida em quatro e
+        // coloque cada cor em um canto
+        if (differentColors == 1) {
             coordinateX = (getWidth()) / 2;
             coordinateY = (getHeight()) / 2;
-        }else{
+        } else {
             coordinateX = (getWidth()) / 4;
             coordinateY = (getHeight()) / 4;
         }
-        //count auxilia no mapeamento de peões
+        // count auxilia no mapeamento de peões
         int count = 0;
-        for(Map.Entry<Cor, Integer> dadosCor: coresDiferentes.entrySet()){
+        for (Map.Entry<Cor, Integer> dadosCor : coresDiferentes.entrySet()) {
             Graphics2D g2d = (Graphics2D) g.create();
             if (corPeao == Cor.AZUL) {
                 g2d.setColor(Color.BLUE);
@@ -168,18 +140,18 @@ public class Casa extends JButton {
             } else {
                 g2d.setColor(Color.WHITE);
             }
-            switch (count){
+            switch (count) {
                 case 0:
                     break;
                 case 1:
-                    coordinateX = 3*coordinateX;
-                    coordinateY = 3*coordinateY;
+                    coordinateX = 3 * coordinateX;
+                    coordinateY = 3 * coordinateY;
                     break;
                 case 2:
-                    coordinateX = 3*coordinateX;
+                    coordinateX = 3 * coordinateX;
                     break;
                 case 3:
-                    coordinateY = 3*coordinateY;
+                    coordinateY = 3 * coordinateY;
                     break;
             }
             count++;
@@ -215,15 +187,15 @@ public class Casa extends JButton {
         return corPeao;
     }
 
-    //adiciona um peao de uma determinada cor
-    public void adicionarPeao(Cor cor){
+    // adiciona um peao de uma determinada cor
+    public void adicionarPeao(Cor cor) {
         peoes.add(cor);
         repaint();
     }
 
-    //adiciona um peao de uma determinada cor
-    public void removerPeao(Cor cor){
-        if(peoes.lastIndexOf(cor) != -1){
+    // adiciona um peao de uma determinada cor
+    public void removerPeao(Cor cor) {
+        if (peoes.lastIndexOf(cor) != -1) {
             peoes.remove(peoes.lastIndexOf(cor));
         }
         repaint();

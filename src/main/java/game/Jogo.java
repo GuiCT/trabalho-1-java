@@ -5,9 +5,6 @@ import java.util.List;
 import view.Mappings;
 
 public class Jogo {
-    private static final int casasAteFim = 50;
-    private static final int casasFila = 5;
-    // ------------------------------------------------------------------------
     private Cor corJogador;
     private Cor corOponente;
     private Posicao[] posicoesPeoesJogador;
@@ -42,77 +39,88 @@ public class Jogo {
     }
 
     public void realizarMovimento(boolean jogador, int peao, int valorDado) {
-        Posicao posicaoBaseAtual;
-
-        if (jogador) {
-            posicaoBaseAtual = this.posicoesPeoesJogador[peao];
-        } else {
-            posicaoBaseAtual = this.posicoesPeoesOponente[peao];
-        }
+        Posicao posicaoBaseAtual = jogador ? posicoesPeoesJogador[peao] : posicoesPeoesOponente[peao];
 
         // Decisão é feita com base no status atual
-        if (posicaoBaseAtual.status == Status.BASE) {
-            // Peão só pode sair da base se o valor do dado for 6
-            // É colocado na posição 0
-            if (valorDado == 6) {
-                posicaoBaseAtual.status = Status.TABULEIRO;
-                posicaoBaseAtual.posicao = 0;
-            }
-        } else if (posicaoBaseAtual.status == Status.TABULEIRO) {
-            // Se o peão estiver no tabuleiro, é somado o valor do dado à sua posição atual
-            posicaoBaseAtual.posicao += valorDado;
-
-            // Se o peão passar da última casa, ele é colocado na fila final
-            // E a posição atual é atualizada para a posição da fila final
-            if (posicaoBaseAtual.posicao > casasAteFim) {
-                posicaoBaseAtual.status = Status.FILA;
-                posicaoBaseAtual.posicao -= casasAteFim + 1;
-
-                if (posicaoBaseAtual.posicao == casasFila) {
-                    // Chegou no final!
-                    posicaoBaseAtual.status = Status.FINAL;
-                    posicaoBaseAtual.posicao = 0;
-                } else if (posicaoBaseAtual.posicao > casasFila) {
-                    // Se passar da última casa da fila
-                    // Ele é colocado na última casa antes do fim
-                    posicaoBaseAtual.posicao = casasFila - 1;
-                }
-            }else{
-                // Verifica se há algum peão do oponente na posição atingida
-                // Se houver, esse pẽao é colocado na base
-                // Caso seja uma posição especial, não é verificado se há peão
-                int posicaoReal = Mappings.calcularPosicaoRealTabuleiro(jogador ? corJogador : corOponente, posicaoBaseAtual.posicao);
-
-                if (!verificarPosicaoEspecial(posicaoReal)) {
-                    List<Integer> conflitos = verificarConflito(jogador, posicaoReal);
-                    for (int i : conflitos) {
-                        if (jogador) {
-                            this.posicoesPeoesOponente[i].status = Status.BASE;
-                            this.posicoesPeoesOponente[i].posicao = i;
-                        } else {
-                            this.posicoesPeoesJogador[i].status = Status.BASE;
-                            this.posicoesPeoesJogador[i].posicao = i;
-                        }
-                    }
-                }               
-            }
-        } else if (posicaoBaseAtual.status == Status.FILA) {
-            // Se o peão passar da última casa, ele é colocado na casa de chegada
-            if (posicaoBaseAtual.posicao + valorDado <= casasFila) {
-                posicaoBaseAtual.posicao = posicaoBaseAtual.posicao + valorDado;
-                if (posicaoBaseAtual.posicao == casasFila) {
-                    // Chegou no final!
-                    posicaoBaseAtual.status = Status.FINAL;
-                    posicaoBaseAtual.posicao = 0;
-                }
-            }
-        }
+        posicaoBaseAtual = switch (posicaoBaseAtual.status) {
+            case BASE -> realizarMovimentoDaBase(posicaoBaseAtual, valorDado);
+            case TABULEIRO -> realizarMovimentoDoTabuleiro(jogador, posicaoBaseAtual, valorDado);
+            case FILA -> realizarMovimentoDaFila(posicaoBaseAtual, valorDado);
+            case FINAL -> posicaoBaseAtual;
+        };
 
         if (jogador) {
-            this.posicoesPeoesJogador[peao] = posicaoBaseAtual;
+            posicoesPeoesJogador[peao] = posicaoBaseAtual;
         } else {
-            this.posicoesPeoesOponente[peao] = posicaoBaseAtual;
+            posicoesPeoesOponente[peao] = posicaoBaseAtual;
         }
+    }
+
+    public Posicao realizarMovimentoDaBase(Posicao posicaoBase, int valorDado) {
+        // Peão só pode sair da base se o valor do dado for 6
+        // É colocado na posição 0
+        if (valorDado == 6) {
+            posicaoBase.status = Status.TABULEIRO;
+            posicaoBase.offset = 0;
+        }
+
+        return posicaoBase;
+    }
+
+    public Posicao realizarMovimentoDoTabuleiro(boolean jogador, Posicao posicaoBase, int valorDado) {
+        posicaoBase.offset += valorDado;
+
+        // Se o peão passar da última casa, ele é colocado na fila final
+        // E a posição atual é atualizada para a posição da fila final
+        if (posicaoBase.offset > 50) {
+            posicaoBase.status = Status.FILA;
+            posicaoBase.offset -= 51;
+
+            if (posicaoBase.offset == 5) {
+                // Chegou no final!
+                posicaoBase.status = Status.FINAL;
+                posicaoBase.offset = 0;
+            } else if (posicaoBase.offset > 5) {
+                // Se passar da última casa da fila
+                // Ele é colocado na última casa antes do fim
+                posicaoBase.offset = 4;
+            }
+        } else {
+            // Verifica se há algum peão do oponente na posição atingida
+            // Se houver, esse pẽao é colocado na base
+            // Caso seja uma posição especial, não é verificado se há peão
+            int posicaoReal = Mappings.calcularPosicaoRealTabuleiro(jogador ? corJogador : corOponente,
+                    posicaoBase.offset);
+
+            if (!verificarPosicaoEspecial(posicaoReal)) {
+                List<Integer> conflitos = verificarConflito(jogador, posicaoReal);
+                for (int i : conflitos) {
+                    if (jogador) {
+                        posicoesPeoesOponente[i].status = Status.BASE;
+                        posicoesPeoesOponente[i].offset = i;
+                    } else {
+                        posicoesPeoesJogador[i].status = Status.BASE;
+                        posicoesPeoesJogador[i].offset = i;
+                    }
+                }
+            }
+        }
+
+        return posicaoBase;
+    }
+
+    public Posicao realizarMovimentoDaFila(Posicao posicaoBase, int valorDado) {
+        // Se o peão passar da última casa, ele é colocado na casa de chegada
+        if (posicaoBase.offset + valorDado <= 5) {
+            posicaoBase.offset = posicaoBase.offset + valorDado;
+            if (posicaoBase.offset == 5) {
+                // Chegou no final!
+                posicaoBase.status = Status.FINAL;
+                posicaoBase.offset = 0;
+            }
+        }
+
+        return posicaoBase;
     }
 
     private List<Integer> verificarConflito(boolean jogador, int posicao) {
@@ -122,9 +130,10 @@ public class Jogo {
         // Se jogador for false, verifica se há conflito com jogador
         Posicao[] posicoes = jogador ? this.posicoesPeoesOponente : this.posicoesPeoesJogador;
         for (int i = 0; i < 4; i++) {
-            if(posicoes[i].status == Status.TABULEIRO){
-                int posicaoBase = posicoes[i].posicao;
-                int posicaoReal = Mappings.calcularPosicaoRealTabuleiro(jogador ? this.corOponente : this.corJogador, posicaoBase);
+            if (posicoes[i].status == Status.TABULEIRO) {
+                int posicaoBase = posicoes[i].offset;
+                int posicaoReal = Mappings.calcularPosicaoRealTabuleiro(jogador ? this.corOponente : this.corJogador,
+                        posicaoBase);
                 if (posicaoReal == posicao) {
                     conflitos.add(i);
                 }

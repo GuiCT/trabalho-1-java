@@ -135,9 +135,9 @@ public class UITabuleiro extends JPanel {
         Cor corJogador = controllerJogo.getCorJogador();
         Cor corOponente = controllerJogo.getCorOponente();
         for (int i = 0; i < 4; i++) {
-            Posicao2D posicao2DJogador = posicaoCasasJogador[posicoesJogador[i].posicao];
+            Posicao2D posicao2DJogador = posicaoCasasJogador[posicoesJogador[i].offset];
             casas[posicao2DJogador.y][posicao2DJogador.x].adicionarPeao(corJogador);
-            Posicao2D posicao2DOponente = posicaoCasasOponente[posicoesOponente[i].posicao];
+            Posicao2D posicao2DOponente = posicaoCasasOponente[posicoesOponente[i].offset];
             casas[posicao2DOponente.y][posicao2DOponente.x].adicionarPeao(corOponente);
         }
     }
@@ -153,16 +153,16 @@ public class UITabuleiro extends JPanel {
         // Atualizar posição anterior para não conter peão
         switch (posicaoAnterior.status) {
             case BASE -> {
-                Posicao2D posicao2DAnterior = Mappings.posicaoCasas.get(cor)[posicaoAnterior.posicao];
+                Posicao2D posicao2DAnterior = Mappings.posicaoCasas.get(cor)[posicaoAnterior.offset];
                 casas[posicao2DAnterior.y][posicao2DAnterior.x].removerPeao(cor);
             }
             case TABULEIRO -> {
                 Posicao2D posicao2DAnterior = Mappings.posicoesTabuleiro[Mappings.calcularPosicaoRealTabuleiro(cor,
-                        posicaoAnterior.posicao)];
+                        posicaoAnterior.offset)];
                 casas[posicao2DAnterior.y][posicao2DAnterior.x].removerPeao(cor);
             }
             case FILA -> {
-                Posicao2D posicao2DAnterior = Mappings.posicaoFilas.get(cor)[posicaoAnterior.posicao];
+                Posicao2D posicao2DAnterior = Mappings.posicaoFilas.get(cor)[posicaoAnterior.offset];
                 casas[posicao2DAnterior.y][posicao2DAnterior.x].removerPeao(cor);
             }
             case FINAL -> {
@@ -171,16 +171,16 @@ public class UITabuleiro extends JPanel {
         // Colocar peão na posição nova
         switch (posicaoAtual.status) {
             case BASE -> {
-                Posicao2D posicao2Dnova = Mappings.posicaoCasas.get(cor)[posicaoAtual.posicao];
+                Posicao2D posicao2Dnova = Mappings.posicaoCasas.get(cor)[posicaoAtual.offset];
                 casas[posicao2Dnova.y][posicao2Dnova.x].adicionarPeao(cor);
             }
             case TABULEIRO -> {
                 Posicao2D posicao2Dnova = Mappings.posicoesTabuleiro[Mappings.calcularPosicaoRealTabuleiro(cor,
-                        posicaoAtual.posicao)];
+                        posicaoAtual.offset)];
                 casas[posicao2Dnova.y][posicao2Dnova.x].adicionarPeao(cor);
             }
             case FILA -> {
-                Posicao2D posicao2Dnova = Mappings.posicaoFilas.get(cor)[posicaoAtual.posicao];
+                Posicao2D posicao2Dnova = Mappings.posicaoFilas.get(cor)[posicaoAtual.offset];
                 casas[posicao2Dnova.y][posicao2Dnova.x].adicionarPeao(cor);
             }
             case FINAL -> {
@@ -194,10 +194,11 @@ public class UITabuleiro extends JPanel {
         Posicao[] posicoesPeoes = controllerJogo.getPosicoesPeoesJogador();
         for (int i = 0; i < 4; i++) {
             Posicao2D posicao2DPeao = switch (posicoesPeoes[i].status) {
-                case BASE -> Mappings.posicaoCasas.get(controllerJogo.getCorJogador())[posicoesPeoes[i].posicao];
-                case TABULEIRO -> Mappings.posicoesTabuleiro[Mappings.calcularPosicaoRealTabuleiro(controllerJogo.getCorJogador(),
-                        posicoesPeoes[i].posicao)];
-                case FILA -> Mappings.posicaoFilas.get(controllerJogo.getCorJogador())[posicoesPeoes[i].posicao];
+                case BASE -> Mappings.posicaoCasas.get(controllerJogo.getCorJogador())[posicoesPeoes[i].offset];
+                case TABULEIRO ->
+                    Mappings.posicoesTabuleiro[Mappings.calcularPosicaoRealTabuleiro(controllerJogo.getCorJogador(),
+                            posicoesPeoes[i].offset)];
+                case FILA -> Mappings.posicaoFilas.get(controllerJogo.getCorJogador())[posicoesPeoes[i].offset];
                 case FINAL -> null;
             };
             if (posicao2DPeao != null && posicao2DPeao.equals(posicao2DSelecionada)) {
